@@ -1,15 +1,17 @@
-from pyrogram import Client, filters
-from call import call_user
+
+import logging
+from aiogram import Bot, Dispatcher, executor, types
 from config import bot_api_token
+import subprocess
+logging.basicConfig(level=logging.INFO)
 
-app = Client(
-    "wakeup2bot",
-    bot_token=bot_api_token
-)
+bot = Bot(token=bot_api_token)
+dp = Dispatcher(bot)
 
+@dp.message_handler(commands=['callme'])
+async def callme(message: types.Message):
+    await message.reply(message["from"].username)
+    subprocess.call(["python", "call.py", message['from'].username])
 
-@app.on_message(filters.command("callme"))
-def callback(client, message):
-    call_user(message.from_user.username)
-
-app.run()
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)

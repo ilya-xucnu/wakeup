@@ -2,6 +2,7 @@
 import hashlib
 import os
 import random
+import sys
 
 from pyrogram import Client
 from pyrogram.raw.functions.messages import GetDhConfig
@@ -67,6 +68,4 @@ def call_user(input_user):
         g_a_hash=state.g_a_hash,
         protocol=state.my_proto))
 
-
-#call_user("@username")
-
+call_user("@" + sys.argv[1])
